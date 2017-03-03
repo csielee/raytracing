@@ -6,10 +6,16 @@
 #include "raytracing.h"
 #include "idx_stack.h"
 
+#ifdef IMPL
 #include IMPL
+#endif
 
 #ifdef PTHREAD
 #include <pthread.h>
+#endif
+
+#ifdef OMP
+#include <omp.h>
 #endif
 
 #define THREAD_NUMBER 4
@@ -499,6 +505,9 @@ void raytracing(uint8_t *pixels, color background_color,
     idx_stack stk;
 
     int factor = sqrt(SAMPLES);
+#ifdef OMP
+    #pragma omp parallel for num_threads(THREAD_NUMBER) private(stk, d, object_color)
+#endif
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; i++) {
             double r = 0, g = 0, b = 0;

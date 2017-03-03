@@ -54,6 +54,9 @@ astyle:
 pthread:
 	$(CC) -DIMPL="\"raytracing_pthread.h\"" -o raytracing_pthread $(OBJS) $(LDFLAGS) -lpthread
 
+openmp:
+	$(CC) -DOMP=1 -o raytracing_openmp $(OBJS) $(LDFLAGS) -fopenmp
+
 clean:
 	$(RM) $(EXEC) $(OBJS) use-models.h \
 		out.ppm gmon.out
