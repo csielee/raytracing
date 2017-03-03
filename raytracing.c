@@ -6,6 +6,14 @@
 #include "raytracing.h"
 #include "idx_stack.h"
 
+#include IMPL
+
+#ifdef PTHREAD
+#include <pthread.h>
+#endif
+
+#define THREAD_NUMBER 4
+
 #define MAX_REFLECTION_BOUNCES	3
 #define MAX_DISTANCE 1000000000000.0
 #define MIN_DISTANCE 0.00001
@@ -458,6 +466,30 @@ void raytracing(uint8_t *pixels, color background_color,
                 light_node lights, const viewpoint *view,
                 int width, int height)
 {
+#ifdef PTHREAD
+    pthread_para *paras[THREAD_NUMBER];
+    pthread_t pids[THREAD_NUMBER];
+
+    /*Create Pthread with THREAD_NUMBER*/
+    for (int i = 0; i < THREAD_NUMBER; i++) {
+        paras[i]->pixels = pixels;
+        paras[i]->background_color = background_color;
+        paras[i]->rectangulars = rectangulars;
+        paras[i]->sphere = sphere;
+        paras[i]->lights = lights;
+        paras[i]->view = view;
+        paras[i]->width = width;
+        paras[i]->height = height;
+        paras[i]->width_start = i;
+        paras[i]->height_start = j;
+        pthread_create(&pids[i],NULL,raytracing_pthread,(void *)&paras[i]);
+    }
+
+    /*wait Pthread finish*/
+    void *ret;
+    for (int i = 0; i < THREAD_NUMBER; i++)
+        pthread_join(pids[i],(void *)&ret);
+#else
     point3 u, v, w, d;
     color object_color = { 0.0, 0.0, 0.0 };
 
@@ -495,4 +527,5 @@ void raytracing(uint8_t *pixels, color background_color,
             }
         }
     }
+#endif
 }

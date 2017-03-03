@@ -17,7 +17,7 @@ LDFLAGS = \
 ifeq ($(strip $(PROFILE)),1)
 PROF_FLAGS = -pg
 CFLAGS += $(PROF_FLAGS)
-LDFLAGS += $(PROF_FLAGS) 
+LDFLAGS += $(PROF_FLAGS) -fopenmp
 endif
 
 OBJS := \
@@ -47,6 +47,12 @@ use-models.h: models.inc Makefile
 check: $(EXEC)
 	@./$(EXEC) && diff -u baseline.ppm out.ppm || (echo Fail; exit)
 	@echo "Verified OK"
+
+astyle:
+	astyle --style=kr --indent=spaces=4 --indent-switches --suffix=none *.[ch]
+
+pthread:
+	$(CC) -DIMPL="\"raytracing_pthread.h\"" -o raytracing_pthread $(OBJS) $(LDFLAGS) -lpthread
 
 clean:
 	$(RM) $(EXEC) $(OBJS) use-models.h \
