@@ -4,6 +4,8 @@
 #include "objects.h"
 #include <stdint.h>
 
+int THREAD_NUMBER;
+
 void raytracing(uint8_t *pixels, color background_color,
                 rectangular_node rectangulars, sphere_node spheres,
                 light_node lights, const viewpoint *view,

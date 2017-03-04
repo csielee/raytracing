@@ -31,8 +31,12 @@ static double diff_in_second(struct timespec t1, struct timespec t2)
     return (diff.tv_sec + diff.tv_nsec / 1000000000.0);
 }
 
-int main()
+int main(int argc,char *argv[])
 {
+    if (argc>1)
+        THREAD_NUMBER = atoi(argv[1]);
+    else
+        THREAD_NUMBER = 4;
     uint8_t *pixels;
     light_node lights = NULL;
     rectangular_node rectangulars = NULL;

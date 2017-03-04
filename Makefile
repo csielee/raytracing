@@ -52,10 +52,10 @@ astyle:
 	astyle --style=kr --indent=spaces=4 --indent-switches --suffix=none *.[ch]
 
 pthread:
-	$(CC) -DPTHREAD=1 -o raytracing_pthread objects.o main.o raytracing.c $(LDFLAGS) -lpthread
+	$(CC) $(CFLAGS) -DPTHREAD=1 -o raytracing_pthread objects.o main.o raytracing.c $(LDFLAGS) -lpthread
 
 openmp:
-	$(CC) -DOMP=1 -o raytracing_openmp objects.o main.o raytracing.c $(LDFLAGS) -fopenmp
+	$(CC) $(CFLAGS) -DOMP=1 -o raytracing_openmp objects.o main.o raytracing.c $(LDFLAGS) -fopenmp
 
 clean:
 	$(RM) $(EXEC) $(OBJS) use-models.h \

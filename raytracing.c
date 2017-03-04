@@ -14,7 +14,6 @@
 #include <omp.h>
 #endif
 
-#define THREAD_NUMBER 4
 
 #define MAX_REFLECTION_BOUNCES	3
 #define MAX_DISTANCE 1000000000000.0
