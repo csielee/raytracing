@@ -552,7 +552,7 @@ void raytracing(uint8_t *pixels, color background_color,
 
     int factor = sqrt(SAMPLES);
 #ifdef OMP
-    #pragma omp parallel for num_threads(THREAD_NUMBER) private(stk, d, object_color)
+    #pragma omp parallel for num_threads(THREAD_NUMBER) private(stk, d, object_color) schedule(static,1)
 #endif
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; i++) {
